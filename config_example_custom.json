@@ -1,0 +1,28 @@
+{
+    "file_types": {
+        "Documents": [".pdf", ".docx", ".doc", ".txt", ".xlsx", ".xls", ".pptx", ".ppt", ".odt", ".rtf", ".csv", ".md"],
+        "Images": [".jpg", ".jpeg", ".png", ".gif", ".bmp", ".svg", ".ico", ".webp", ".tiff", ".heic", ".raw", ".jfif"],
+        "Videos": [".mp4", ".mkv", ".avi", ".mov", ".wmv", ".flv", ".webm", ".m4v", ".3gp", ".mts"],
+        "Music": [".mp3", ".wav", ".flac", ".aac", ".ogg", ".wma", ".m4a", ".mid", ".midi"],
+        "Installers": [".exe", ".msi", ".dmg", ".pkg", ".deb", ".rpm", ".apk", ".appimage"],
+        "Archives": [".zip", ".rar", ".7z", ".tar", ".gz", ".bz2", ".xz", ".iso"],
+        "Code": [".py", ".js", ".html", ".css", ".java", ".cpp", ".c", ".h", ".json", ".xml", ".sql", ".php", ".ts", ".sh", ".bat", ".yml", ".yaml"],
+        
+        "_COMMENT_1": "=== USER-ADDED CUSTOM CATEGORIES BELOW ===",
+        
+        "Blender Projects": [".blend", ".blend1"],
+        "CAD Files": [".dwg", ".dxf", ".step", ".stp", ".iges", ".igs"],
+        "3D Printing": [".stl", ".obj", ".gcode", ".3mf"],
+        "Unity Projects": [".unity", ".prefab", ".asset", ".mat"],
+        "Unreal Projects": [".uproject", ".uasset", ".umap"],
+        "Adobe Projects": [".psd", ".psb", ".ai", ".aep", ".prproj"],
+        "Audio Production": [".flp", ".als", ".logic", ".ptx"],
+        "Game ROMs": [".nes", ".snes", ".gba", ".nds", ".iso"],
+        "eBooks": [".epub", ".mobi", ".azw3", ".cbz", ".cbr"],
+        "Fonts": [".ttf", ".otf", ".woff", ".woff2"],
+        
+        "_COMMENT_2": "=== ADD YOUR OWN CATEGORIES HERE ===",
+        
+        "My Custom Category": [".custom", ".xyz"]
+    }
+}

@@ -81,13 +81,42 @@ class FileOrganizer:
             if not isinstance(config["file_types"], dict):
                 raise ValueError("Invalid config: 'file_types' must be a dictionary")
             
-            # Validate each category has a list of extensions
-            for category, extensions in config["file_types"].items():
-                if not isinstance(extensions, list):
-                    raise ValueError(f"Invalid config: '{category}' must have a list of extensions")
+            # Validate each category and filter out invalid ones
+            valid_categories = {}
+            invalid_count = 0
             
-            self._log("✅ Loaded file type configuration from config.json")
-            return config["file_types"]
+            for category, extensions in config["file_types"].items():
+                # Validate category name is a string
+                if not isinstance(category, str) or not category.strip():
+                    self._log(f"⚠️ Skipping invalid category name: {repr(category)}")
+                    invalid_count += 1
+                    continue
+                
+                # Validate extensions is a list
+                if not isinstance(extensions, list):
+                    self._log(f"⚠️ Skipping category '{category}': extensions must be a list, got {type(extensions).__name__}")
+                    invalid_count += 1
+                    continue
+                
+                # Validate each extension is a string
+                valid_extensions = []
+                for ext in extensions:
+                    if isinstance(ext, str):
+                        valid_extensions.append(ext)
+                    else:
+                        self._log(f"⚠️ Skipping invalid extension in '{category}': {repr(ext)} (must be string)")
+                
+                # Add category if it has at least one valid extension or is explicitly empty
+                valid_categories[category] = valid_extensions
+            
+            if invalid_count > 0:
+                self._log(f"⚠️ Skipped {invalid_count} invalid category/categories")
+            
+            if not valid_categories:
+                raise ValueError("No valid categories found in config")
+            
+            self._log(f"✅ Loaded {len(valid_categories)} file type categories from config.json")
+            return valid_categories
             
         except FileNotFoundError:
             self._log("⚠️ config.json not found, creating default configuration...")
@@ -98,13 +127,36 @@ class FileOrganizer:
         except (json.JSONDecodeError, ValueError) as e:
             self._log(f"⚠️ Config error: {e}")
             self._log("🔄 Regenerating config.json with default values...")
-            self._regenerate_config()
+            # Try to preserve user categories if config was partially loaded
+            try:
+                existing_config = config if 'config' in locals() else None
+                self._regenerate_config(preserve_user_categories=True, existing_config=existing_config)
+            except:
+                self._regenerate_config()
             self._log("✅ Config regenerated successfully")
             return self.DEFAULT_CONFIG["file_types"]
     
-    def _regenerate_config(self):
-        """Regenerate config.json with default values"""
-        self._save_config(self.DEFAULT_CONFIG)
+    def _regenerate_config(self, preserve_user_categories=False, existing_config=None):
+        """
+        Regenerate config.json with default values
+        
+        Args:
+            preserve_user_categories: If True, merge user categories with defaults
+            existing_config: Existing config to merge with defaults
+        """
+        if preserve_user_categories and existing_config and "file_types" in existing_config:
+            # Merge user categories with defaults
+            merged_config = {"file_types": dict(self.DEFAULT_CONFIG["file_types"])}
+            
+            # Add user categories that aren't in defaults
+            for category, extensions in existing_config["file_types"].items():
+                if category not in merged_config["file_types"]:
+                    merged_config["file_types"][category] = extensions
+                    self._log(f"📌 Preserved user category: '{category}'")
+            
+            self._save_config(merged_config)
+        else:
+            self._save_config(self.DEFAULT_CONFIG)
     
     def _save_config(self, config):
         """Save configuration to file"""

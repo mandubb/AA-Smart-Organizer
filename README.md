@@ -16,6 +16,12 @@
   - 📦 **Archives** → `.zip`, `.rar`, `.7z`, `.tar`, etc.
   - 💻 **Code** → `.py`, `.js`, `.html`, `.css`, `.java`, etc.
 
+- **🎨 Fully Customizable** - Add your own categories without touching code!
+  - Edit `config.json` to add custom categories (e.g., "Blender Projects", "CAD Files")
+  - Folders are created automatically during organization
+  - Invalid entries are skipped gracefully with warnings
+  - See [CUSTOM_CATEGORIES_GUIDE.md](CUSTOM_CATEGORIES_GUIDE.md) for detailed instructions
+
 - **📊 Progress Tracking** - Real-time progress bar and file counter
 - **↶ Undo Functionality** - Restore files to original locations with one click
 - **📝 Activity Log** - Detailed summary of all operations
@@ -79,43 +85,45 @@ AA Smart Organizer/
 
 ### Customizing File Categories
 
-You can easily customize which file types belong to which categories by editing `config.json`:
+**AA Smart Organizer is fully user-customizable!** You can add, edit, or remove file categories directly in `config.json` without modifying any Python code.
 
-```json
-{
-    "file_types": {
-        "Documents": [".pdf", ".docx", ".txt", ".csv", ".md"],
-        "Images": [".jpg", ".png", ".gif", ".svg"],
-        "YourCustomCategory": [".ext1", ".ext2", ".ext3"]
-    }
-}
-```
-
-**How to customize:**
+#### Quick Start
 
 1. **Open** `config.json` in any text editor
-2. **Add/Remove** file extensions from existing categories
-3. **Create** new categories by adding a new key with a list of extensions
-4. **Save** the file
-5. **Click** the "🔄 Reload Config" button in the app (or restart the app)
+2. **Add your custom category:**
+   ```json
+   {
+       "file_types": {
+           "Documents": [".pdf", ".docx", ".txt"],
+           "Images": [".jpg", ".png"],
+           "Blender Projects": [".blend", ".blend1"],
+           "CAD Files": [".dwg", ".dxf", ".step"]
+       }
+   }
+   ```
+3. **Save** the file
+4. **Click** the "🔄 Reload Config" button in the app
+5. **Organize!** Folders are created automatically
 
-**Example - Adding a "3D Models" category:**
+#### 📚 Comprehensive Guide
 
-```json
-{
-    "file_types": {
-        "Documents": [".pdf", ".docx", ".txt"],
-        "Images": [".jpg", ".png"],
-        "3D Models": [".obj", ".fbx", ".stl", ".blend", ".3ds"]
-    }
-}
-```
+For detailed instructions, examples, and troubleshooting, see:
+**[CUSTOM_CATEGORIES_GUIDE.md](CUSTOM_CATEGORIES_GUIDE.md)**
 
-**Features:**
-- ✅ **Auto-validation** - Invalid configs are automatically regenerated
-- ✅ **Hot reload** - Use the "Reload Config" button to apply changes without restarting
-- ✅ **Backward compatible** - Old config format is automatically migrated
-- ✅ **Safe defaults** - Missing config file is auto-created with 14 categories
+This guide includes:
+- ✅ Valid and invalid configuration examples
+- ✅ Real-world use cases (developers, designers, students)
+- ✅ Validation rules and error handling
+- ✅ Tips and best practices
+
+#### Key Features
+
+- **🎯 Fully Dynamic** - Read all categories from `config.json` at runtime
+- **📁 Auto-Folder Creation** - Folders are created automatically during organization
+- **✅ Graceful Validation** - Invalid entries are skipped with warnings (won't break the app)
+- **🔄 Hot Reload** - Apply changes without restarting the app
+- **🛡️ Safe Defaults** - Missing config is auto-created with 17 default categories
+- **💾 Preservation** - User categories are preserved even if config regenerates
 
 ---
 
