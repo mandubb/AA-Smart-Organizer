@@ -15,7 +15,7 @@
         "Code": [".py", ".js", ".html", ".css", ".java", ".cpp", ".c", ".h", ".json", ".xml", ".sql", ".php", ".ts", ".sh", ".bat", ".yml", ".yaml"],
         "Game Files": [".iso", ".bin", ".cue", ".sav", ".pak", ".vpk", ".wad", ".rom", ".nes", ".gba", ".n64", ".rpf"],
         "System": [".bat", ".cmd", ".reg", ".inf", ".sys", ".dll", ".ini", ".cfg", ".log", ".tmp"],
-        "Design": [".psd", ".ai", ".xd", ".fig", ".blend", ".fbx", ".obj", ".3ds", ".prproj", ".aep", ".kra", ".xcf", ".dwg", ".dxf", ".skp", ".layout", ".style", ".drawio"],
+        "Design": [".psd", ".ai", ".xd", ".fig", ".blend", ".fbx", ".obj", ".3ds", ".prproj", ".aep", ".kra", ".xcf", ".dwg", ".dxf", ".skp", ".layout", ".style"],
         "Backups": [".img", ".vhd", ".vhdx", ".bak", ".gho", ".tar.gz"],
         "eBooks": [".epub", ".mobi", ".azw3", ".cbz", ".cbr", ".pdf"],
         "Plugins & Mods": [".dll", ".pak", ".vst", ".vst3", ".esp", ".bsa", ".mod", ".asi"],

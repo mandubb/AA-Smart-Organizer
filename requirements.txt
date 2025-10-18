@@ -1,2 +1,5 @@
 customtkinter>=5.2.0
 pathlib2>=2.3.7; python_version < '3.4'
+schedule>=1.2.0
+reportlab>=4.0.0
+pillow>=9.0.0

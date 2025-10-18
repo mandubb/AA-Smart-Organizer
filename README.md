@@ -1,6 +1,9 @@
-# 🗂️ AA Smart Organizer
+# ⚡ AA Smart Organizer
 
-**A modern Python desktop application that automatically organizes messy folders into neatly categorized subfolders.**
+**A professional file organization and maintenance system with futuristic dark-themed GUI.**
+
+> ✨ **Latest Features**: PDF Export, Safety Confirmation Dialogs, Recycle Bin Clearing, Enhanced UI  
+> 🚀 **Automate Smarter** - Organize files, clean junk, and generate professional reports!
 
 ---
 
@@ -27,6 +30,17 @@
 - **📝 Activity Log** - Detailed summary of all operations
 - **🎨 Modern UI** - Clean, dark-themed interface built with CustomTkinter
 
+### ✨ Professional Features
+
+- **🧠 Smart Activity Logging** - Detailed logs with timestamps and file tracking
+- **🧹 Quick Clean Mode** - Remove junk files, empty folders, and clear Recycle Bin
+- **⚠️ Safety Confirmation** - Warning dialog before any destructive operations
+- **📊 PDF Export** - Generate professional PDF reports with tables and charts
+- **👁️ Preview Mode** - See what will be deleted without actually deleting
+- **✨🧹 Organize + Clean** - Two-in-one operation for maximum efficiency
+- **🎨 Futuristic Theme** - Dark interface with cyan/blue/purple accents
+- **🔧 Modular Architecture** - Clean, maintainable, extensible codebase
+
 ---
 
 ## 🚀 Installation
@@ -46,23 +60,51 @@
    ```bash
    pip install -r requirements.txt
    ```
+   
+   Required packages:
+   - `customtkinter` - Modern GUI framework
+   - `reportlab` - PDF generation
+   - `pillow` - Image support for PDFs
+   - `schedule` - Task scheduling
 
 3. **Run the application**
    ```bash
-   python main.py
+   python main_v2.py
    ```
 
 ---
 
 ## 📖 How to Use
 
-1. **Launch the app** by running `python main.py`
+### GUI Mode
+
+1. **Launch the app** by running `python main_v2.py`
 2. **Click "📁 Browse"** to select a folder you want to organize
 3. **Review the file count** - the app shows how many files can be organized
-4. **Click "✨ Organize Files"** to start the organization process
-5. **Watch the progress** - see real-time updates as files are sorted
-6. **Review the summary** - check the activity log for detailed results
-7. **Use "↶ Undo Last Action"** if you want to restore files to their original locations
+4. **Choose an action:**
+   - **✨ Organize Files** - Sort files into categories
+   - **✨🧹 Organize + Clean** - Clean junk first, then organize
+   - **🧹 Quick Clean** - Remove junk files and clear Recycle Bin (with confirmation)
+   - **👁️ Preview Clean** - See what would be deleted (safe, no confirmation)
+   - **📊 Export Summary** - Generate PDF/HTML/Text report
+5. **Watch the progress** - see real-time updates in the activity log
+6. **Use "↶ Undo Last Action"** if you want to restore organized files
+
+### Quick Clean Features
+
+**What Gets Deleted:**
+- Temporary files: `.tmp`, `.temp`, `.log`, `.cache`
+- System junk: `Thumbs.db`, `desktop.ini`, `.DS_Store`
+- Office temp files: `~$*.docx`, `~$*.xlsx`
+- Empty folders
+- **Recycle Bin contents** (Windows)
+
+**Safety Features:**
+- ⚠️ **Confirmation Dialog** - Shows before any deletion
+- Clear warning about permanent deletion
+- Lists all file types that will be affected
+- "Cancel" option to abort
+- **Preview Mode** - See what would be deleted without deleting
 
 ---
 
@@ -70,13 +112,28 @@
 
 ```
 AA Smart Organizer/
-├── main.py              # Main application with GUI
-├── organizer.py         # File organization logic
-├── undo_manager.py      # Undo functionality
-├── config.json          # File type categories configuration
-├── undo_log.json        # Auto-generated undo history
-├── requirements.txt     # Python dependencies
-└── README.md           # This file
+├── main_v2.py                   # Main GUI Application
+├── organizer.py                 # Core organization logic
+├── undo_manager.py              # Undo functionality
+├── config.json                  # Global configuration
+├── requirements.txt             # Python dependencies
+├── README.md                    # This file
+│
+├── modules/                     # Modular components
+│   ├── __init__.py
+│   ├── utils.py                # Utility functions
+│   ├── activity_log.py         # Activity logging
+│   ├── maintenance.py          # Cleanup & maintenance
+│   ├── summary.py              # Summary & PDF export
+│   ├── scheduler.py            # Task scheduling
+│   └── gui_futuristic.py       # Confirmation dialogs & theme
+│
+├── logs/                        # Activity logs
+│   └── activity_log.txt
+│
+└── exports/                     # Exported reports
+    └── summaries/
+        └── *.pdf               # PDF reports
 ```
 
 ---
@@ -105,16 +162,20 @@ AA Smart Organizer/
 4. **Click** the "🔄 Reload Config" button in the app
 5. **Organize!** Folders are created automatically
 
-#### 📚 Comprehensive Guide
+#### Example Categories
 
-For detailed instructions, examples, and troubleshooting, see:
-**[CUSTOM_CATEGORIES_GUIDE.md](CUSTOM_CATEGORIES_GUIDE.md)**
+The default `config.json` includes 23+ categories:
+- Documents, Images, Videos, Music
+- Code, Design, Installers, Archives
+- Game Files, eBooks, Torrents
+- Backups, Plugins & Mods, System files
+- And more!
 
-This guide includes:
-- ✅ Valid and invalid configuration examples
-- ✅ Real-world use cases (developers, designers, students)
-- ✅ Validation rules and error handling
-- ✅ Tips and best practices
+**Add your own:**
+```json
+"3D Models": [".obj", ".fbx", ".blend", ".3ds"],
+"Spreadsheets": [".xlsx", ".xls", ".csv", ".ods"]
+```
 
 #### Key Features
 
@@ -127,25 +188,40 @@ This guide includes:
 
 ---
 
-## 🔮 Future Enhancements
+## 📊 PDF Export Features
 
-- [ ] Include subfolders option
-- [ ] Send junk files to Recycle Bin
-- [ ] Scheduled auto-organize (weekly cleanup)
-- [ ] Light/Dark theme switcher
-- [ ] Desktop notifications
-- [ ] Portable .exe build with PyInstaller
+**Professional Reports Include:**
+- 📈 Statistics table (files processed, success rate, size moved)
+- 📁 Category breakdown with percentages
+- 🏆 Most active category
+- ⏱️ Operation duration and timestamp
+- 🎨 Color-coded tables and charts
+- 📄 Custom footer: "Generated by AA Smart Organizer — Automate Smarter."
+
+**Export Formats:**
+- **PDF** - Professional reports (default)
+- **HTML** - Web-viewable with charts
+- **Text** - Simple plain text
+
+**Usage:**
+1. Organize some files
+2. Click "📊 Export Summary"
+3. Choose format (PDF recommended)
+4. Save to `exports/summaries/`
 
 ---
 
 ## 🛠️ Tech Stack
 
-- **Python 3** - Core language
-- **CustomTkinter** - Modern GUI framework
+- **Python 3.7+** - Core language
+- **CustomTkinter** - Modern dark-themed GUI framework
+- **ReportLab** - Professional PDF generation
+- **Pillow** - Image processing for PDFs
 - **pathlib** - Cross-platform path handling
 - **shutil** - File operations
-- **json** - Configuration and undo log storage
+- **json** - Configuration storage
 - **threading** - Non-blocking UI operations
+- **ctypes** - Windows API for Recycle Bin clearing
 
 ---
 
@@ -163,10 +239,19 @@ To create a standalone `.exe` file:
 
 ```bash
 pip install pyinstaller
-pyinstaller --onefile --windowed --name "AA Smart Organizer" main.py
+pyinstaller --onefile --windowed --name "AA Smart Organizer" main_v2.py
 ```
 
 The executable will be in the `dist/` folder.
+
+### Color Theme
+
+**Futuristic Dark Theme:**
+- Background: Deep space black (#0A0E27)
+- Accents: Cyan (#00D9FF), Blue (#0066FF), Purple (#9D00FF)
+- Success: Matrix green (#00FF88)
+- Warning: Orange (#F59E0B)
+- Text: White with blue-gray secondary
 
 ---
 
@@ -183,6 +268,17 @@ The executable will be in the `dist/` folder.
 **Issue: Undo not working**
 - Ensure `undo_log.json` exists and is not corrupted
 - Check that files haven't been manually moved after organization
+
+**Issue: Recycle Bin not clearing**
+- Ensure you're running on Windows (feature is Windows-only)
+- Check that you confirmed the warning dialog
+- Preview mode does NOT clear Recycle Bin (by design)
+- Look for "✅ Recycle Bin cleared" in the activity log
+
+**Issue: PDF export fails**
+- Ensure `reportlab` is installed: `pip install reportlab`
+- Check that `exports/summaries/` directory exists
+- Organize files first before exporting (need data to export)
 
 ---
 
