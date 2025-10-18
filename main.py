@@ -30,14 +30,17 @@ class AASmartOrganizer(ctk.CTk):
         ctk.set_appearance_mode("dark")
         ctk.set_default_color_theme("blue")
         
-        # Initialize components
-        self.organizer = FileOrganizer()
+        # Initialize components (organizer will be created after UI for log callback)
         self.undo_manager = UndoManager()
         self.selected_folder = None
         self.is_organizing = False
+        self.organizer = None
         
         # Create UI
         self._create_ui()
+        
+        # Initialize organizer with log callback
+        self.organizer = FileOrganizer(log_callback=self._log_message)
     
     def _create_ui(self):
         """Build the user interface"""
@@ -134,6 +137,22 @@ class AASmartOrganizer(ctk.CTk):
             hover_color="#6B3410"
         )
         self.undo_button.pack(side="right", padx=10)
+        
+        # Reload Config Button (smaller, below main buttons)
+        reload_frame = ctk.CTkFrame(self, fg_color="transparent")
+        reload_frame.pack(pady=(5, 0), padx=20)
+        
+        self.reload_button = ctk.CTkButton(
+            reload_frame,
+            text="🔄 Reload Config",
+            command=self._reload_config,
+            width=150,
+            height=30,
+            font=ctk.CTkFont(size=12),
+            fg_color="#4A5568",
+            hover_color="#2D3748"
+        )
+        self.reload_button.pack()
         
         # Progress Section
         progress_frame = ctk.CTkFrame(self)
@@ -353,6 +372,39 @@ class AASmartOrganizer(ctk.CTk):
         
         # Re-enable button
         self.undo_button.configure(state="normal")
+    
+    def _reload_config(self):
+        """Reload configuration from config.json"""
+        if self.is_organizing:
+            self._log_message("⚠️ Cannot reload config while organizing!", "warning")
+            return
+        
+        self._log_message("\n" + "="*50)
+        self._log_message("🔄 Reloading configuration...")
+        
+        # Disable button during reload
+        self.reload_button.configure(state="disabled")
+        
+        # Reload config
+        success, message, count = self.organizer.reload_config()
+        
+        if success:
+            self._log_message(f"✅ {message}")
+            
+            # Update file count if folder is selected
+            if self.selected_folder:
+                total, organizable = self.organizer.get_organizable_count(self.selected_folder)
+                self.file_info_label.configure(
+                    text=f"📊 {total} files found | {organizable} can be organized"
+                )
+                self._log_message(f"Updated: {organizable} files can now be organized")
+        else:
+            self._log_message(f"❌ {message}", "error")
+        
+        self._log_message("="*50 + "\n")
+        
+        # Re-enable button
+        self.reload_button.configure(state="normal")
     
     def _log_message(self, message, level="info"):
         """Add a message to the log textbox"""

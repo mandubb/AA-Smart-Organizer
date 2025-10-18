@@ -13,33 +13,127 @@ from collections import defaultdict
 class FileOrganizer:
     """Organizes files into categorized subfolders"""
     
-    def __init__(self, config_file="config.json"):
+    # Default configuration structure
+    DEFAULT_CONFIG = {
+        "file_types": {
+            "Documents": [".pdf", ".docx", ".doc", ".txt", ".xlsx", ".xls", ".pptx", ".ppt", ".odt", ".rtf", ".csv", ".md"],
+            "Images": [".jpg", ".jpeg", ".png", ".gif", ".bmp", ".svg", ".ico", ".webp", ".tiff", ".heic", ".raw"],
+            "Videos": [".mp4", ".mkv", ".avi", ".mov", ".wmv", ".flv", ".webm", ".m4v", ".3gp", ".mts"],
+            "Music": [".mp3", ".wav", ".flac", ".aac", ".ogg", ".wma", ".m4a", ".mid", ".midi"],
+            "Installers": [".exe", ".msi", ".dmg", ".pkg", ".deb", ".rpm", ".apk", ".appimage"],
+            "Archives": [".zip", ".rar", ".7z", ".tar", ".gz", ".bz2", ".xz", ".iso"],
+            "Code": [".py", ".js", ".html", ".css", ".java", ".cpp", ".c", ".h", ".json", ".xml", ".sql", ".php", ".ts", ".sh", ".bat", ".yml", ".yaml"],
+            "Game Files": [".iso", ".bin", ".cue", ".sav", ".pak", ".vpk", ".wad", ".rom", ".nes", ".gba", ".n64", ".rpf"],
+            "System": [".bat", ".cmd", ".reg", ".inf", ".sys", ".dll", ".ini", ".cfg", ".log", ".tmp"],
+            "Design": [".psd", ".ai", ".xd", ".fig", ".blend", ".fbx", ".obj", ".3ds", ".prproj", ".aep", ".kra", ".xcf"],
+            "Backups": [".img", ".vhd", ".vhdx", ".bak", ".gho", ".tar.gz"],
+            "eBooks": [".epub", ".mobi", ".azw3", ".cbz", ".cbr", ".pdf"],
+            "Plugins & Mods": [".dll", ".pak", ".vst", ".vst3", ".esp", ".bsa", ".mod", ".asi"],
+            "Torrents": [".torrent"],
+            "Miscellaneous": []
+        }
+    }
+    
+    def __init__(self, config_file="config.json", log_callback=None):
         """
         Initialize the file organizer
         
         Args:
             config_file: Path to the configuration file containing categories
+            log_callback: Optional callback function for logging messages
         """
         self.config_file = config_file
+        self.log_callback = log_callback
         self.categories = self._load_categories()
         self.stats = defaultdict(int)
     
+    def _log(self, message):
+        """Send log message to callback if available"""
+        if self.log_callback:
+            self.log_callback(message)
+        else:
+            print(message)
+    
     def _load_categories(self):
-        """Load file categories from config file"""
+        """
+        Load file categories from config file with validation and auto-regeneration
+        
+        Returns:
+            dict: File type categories
+        """
         try:
+            # Try to load existing config
             with open(self.config_file, 'r', encoding='utf-8') as f:
                 config = json.load(f)
-                return config.get("categories", {})
-        except (FileNotFoundError, json.JSONDecodeError) as e:
-            print(f"Error loading config: {e}")
-            # Return default categories if config fails
-            return {
-                "Documents": [".pdf", ".docx", ".txt"],
-                "Images": [".jpg", ".jpeg", ".png"],
-                "Videos": [".mp4", ".mkv"],
-                "Music": [".mp3", ".wav"],
-                "Installers": [".exe", ".msi"]
-            }
+            
+            # Validate structure - check for 'file_types' key
+            if "file_types" not in config:
+                # Check for old 'categories' key for backward compatibility
+                if "categories" in config:
+                    self._log("⚠️ Old config format detected, migrating to new format...")
+                    config["file_types"] = config.pop("categories")
+                    self._save_config(config)
+                    self._log("✅ Config migrated successfully")
+                else:
+                    raise ValueError("Invalid config structure: missing 'file_types' key")
+            
+            # Validate that file_types is a dictionary
+            if not isinstance(config["file_types"], dict):
+                raise ValueError("Invalid config: 'file_types' must be a dictionary")
+            
+            # Validate each category has a list of extensions
+            for category, extensions in config["file_types"].items():
+                if not isinstance(extensions, list):
+                    raise ValueError(f"Invalid config: '{category}' must have a list of extensions")
+            
+            self._log("✅ Loaded file type configuration from config.json")
+            return config["file_types"]
+            
+        except FileNotFoundError:
+            self._log("⚠️ config.json not found, creating default configuration...")
+            self._regenerate_config()
+            self._log("✅ Default config.json created successfully")
+            return self.DEFAULT_CONFIG["file_types"]
+            
+        except (json.JSONDecodeError, ValueError) as e:
+            self._log(f"⚠️ Config error: {e}")
+            self._log("🔄 Regenerating config.json with default values...")
+            self._regenerate_config()
+            self._log("✅ Config regenerated successfully")
+            return self.DEFAULT_CONFIG["file_types"]
+    
+    def _regenerate_config(self):
+        """Regenerate config.json with default values"""
+        self._save_config(self.DEFAULT_CONFIG)
+    
+    def _save_config(self, config):
+        """Save configuration to file"""
+        try:
+            with open(self.config_file, 'w', encoding='utf-8') as f:
+                json.dump(config, f, indent=4)
+        except IOError as e:
+            self._log(f"❌ Error saving config: {e}")
+    
+    def reload_config(self):
+        """
+        Reload configuration from file
+        
+        Returns:
+            tuple: (success: bool, message: str, category_count: int)
+        """
+        try:
+            old_count = len(self.categories)
+            self.categories = self._load_categories()
+            new_count = len(self.categories)
+            
+            if new_count != old_count:
+                message = f"Config reloaded: {new_count} categories (was {old_count})"
+            else:
+                message = f"Config reloaded: {new_count} categories"
+            
+            return True, message, new_count
+        except Exception as e:
+            return False, f"Failed to reload config: {str(e)}", 0
     
     def get_category(self, file_extension):
         """

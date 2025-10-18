@@ -29,13 +29,21 @@ python main.py
 
 ### Step 3: Check Results
 Your files are now organized into subfolders:
-- 📄 **Documents** - PDFs, Word docs, Excel files, etc.
-- 🖼️ **Images** - JPG, PNG, GIF, SVG, etc.
-- 🎥 **Videos** - MP4, MKV, AVI, MOV, etc.
-- 🎵 **Music** - MP3, WAV, FLAC, etc.
-- ⚙️ **Installers** - EXE, MSI, APK, etc.
-- 📦 **Archives** - ZIP, RAR, 7Z, etc.
-- 💻 **Code** - Python, JavaScript, HTML, CSS, etc.
+- 📄 **Documents** - PDFs, Word docs, Excel files, CSV, Markdown, etc.
+- 🖼️ **Images** - JPG, PNG, GIF, SVG, HEIC, RAW, etc.
+- 🎥 **Videos** - MP4, MKV, AVI, MOV, 3GP, MTS, etc.
+- 🎵 **Music** - MP3, WAV, FLAC, MIDI, etc.
+- ⚙️ **Installers** - EXE, MSI, APK, AppImage, etc.
+- 📦 **Archives** - ZIP, RAR, 7Z, XZ, etc.
+- 💻 **Code** - Python, JavaScript, HTML, CSS, PHP, TypeScript, etc.
+- 🎮 **Game Files** - ROMs, save files, mods, etc.
+- 🖥️ **System** - DLL, INI, CFG, LOG, etc.
+- 🎨 **Design** - PSD, AI, Figma, Blender, etc.
+- 💾 **Backups** - IMG, VHD, BAK, etc.
+- 📚 **eBooks** - EPUB, MOBI, CBZ, etc.
+- 🔌 **Plugins & Mods** - VST, ESP, BSA, etc.
+
+**Total: 14 categories with 100+ file types!**
 
 ### Step 4: Undo (If Needed)
 - Click **"↶ Undo Last Action"**
@@ -51,15 +59,25 @@ Your files are now organized into subfolders:
 
 ## Customization
 
-Edit `config.json` to add your own categories:
+### Adding Your Own Categories
+
+1. **Open** `config.json` in any text editor
+2. **Edit** the file types - add/remove extensions or create new categories
+3. **Save** the file
+4. **Click** the **"🔄 Reload Config"** button in the app
+
+Example - Adding a custom category:
 
 ```json
 {
-    "categories": {
-        "MyCategory": [".ext1", ".ext2", ".ext3"]
+    "file_types": {
+        "Documents": [".pdf", ".docx", ".txt"],
+        "My Custom Category": [".ext1", ".ext2", ".ext3"]
     }
 }
 ```
+
+**See `CONFIG_GUIDE.md` for detailed customization instructions!**
 
 ## Troubleshooting
 

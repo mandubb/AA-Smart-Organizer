@@ -77,17 +77,45 @@ AA Smart Organizer/
 
 ## ⚙️ Configuration
 
-You can customize file categories by editing `config.json`:
+### Customizing File Categories
+
+You can easily customize which file types belong to which categories by editing `config.json`:
 
 ```json
 {
-    "categories": {
-        "Documents": [".pdf", ".docx", ".txt"],
-        "Images": [".jpg", ".png"],
-        "YourCustomCategory": [".ext1", ".ext2"]
+    "file_types": {
+        "Documents": [".pdf", ".docx", ".txt", ".csv", ".md"],
+        "Images": [".jpg", ".png", ".gif", ".svg"],
+        "YourCustomCategory": [".ext1", ".ext2", ".ext3"]
     }
 }
 ```
+
+**How to customize:**
+
+1. **Open** `config.json` in any text editor
+2. **Add/Remove** file extensions from existing categories
+3. **Create** new categories by adding a new key with a list of extensions
+4. **Save** the file
+5. **Click** the "🔄 Reload Config" button in the app (or restart the app)
+
+**Example - Adding a "3D Models" category:**
+
+```json
+{
+    "file_types": {
+        "Documents": [".pdf", ".docx", ".txt"],
+        "Images": [".jpg", ".png"],
+        "3D Models": [".obj", ".fbx", ".stl", ".blend", ".3ds"]
+    }
+}
+```
+
+**Features:**
+- ✅ **Auto-validation** - Invalid configs are automatically regenerated
+- ✅ **Hot reload** - Use the "Reload Config" button to apply changes without restarting
+- ✅ **Backward compatible** - Old config format is automatically migrated
+- ✅ **Safe defaults** - Missing config file is auto-created with 14 categories
 
 ---
 
